@@ -7,24 +7,39 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
         :root {
             --brand-emerald: #10b981;
+            --brand-cyan: #22d3ee;
             --bg-deep: #050807;
+            --bg-soft: #0a1513;
             --panel-glass: rgba(255, 255, 255, 0.03);
             --border-glass: rgba(255, 255, 255, 0.08);
+            --surface: rgba(8, 18, 16, 0.6);
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg-deep);
             color: #f8fafc;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.18), transparent 45%),
+                radial-gradient(circle at 85% 10%, rgba(34, 211, 238, 0.12), transparent 40%),
+                radial-gradient(circle at 70% 80%, rgba(16, 185, 129, 0.16), transparent 45%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .mono { font-family: 'JetBrains Mono', monospace; }
@@ -43,22 +58,57 @@
         /* Glassmorphism */
         .glass {
             background: var(--panel-glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(22px) saturate(160%);
+            -webkit-backdrop-filter: blur(22px) saturate(160%);
             border: 1px solid var(--border-glass);
             transition: all 0.3s ease;
         }
         .glass:hover {
             border-color: rgba(16, 185, 129, 0.4);
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(16, 185, 129, 0.05);
         }
 
         /* Hero Text Gradient & Clip Fix */
         .hero-clip {
-            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5f5 45%, #7dd3fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             line-height: 1.1;
+        }
+
+        .section-pad {
+            padding: 8rem 0;
+        }
+
+        .section-title {
+            font-size: clamp(2.2rem, 3vw, 3.75rem);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-shell {
+            margin-top: 1rem;
+            background: rgba(5, 10, 9, 0.85);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            border-radius: 999px;
+            padding: 0.75rem 1.5rem;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            border-radius: 2rem;
+            padding: 1.75rem;
+        }
+
+        .tag-pill {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(34, 211, 238, 0.15));
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .grid-dots {
+            background-image: radial-gradient(rgba(148, 163, 184, 0.2) 1px, transparent 1px);
+            background-size: 26px 26px;
         }
 
         canvas#bg-canvas {
@@ -89,6 +139,7 @@
         /* Tablet/Mobile Adjustments */
         @media (max-width: 768px) {
             .hero-clip { font-size: 3.5rem; }
+            .nav-shell { border-radius: 1.5rem; }
         }
     </style>
 </head>
@@ -98,26 +149,28 @@
     <canvas id="bg-canvas"></canvas>
 
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/20 backdrop-blur-lg">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3 cursor-pointer group" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-                <div class="w-10 h-10 bg-emerald-600 flex items-center justify-center rounded-xl font-bold text-white shadow-lg group-hover:scale-105 transition-transform">R</div>
-                <div class="flex flex-col leading-none">
-                    <span class="text-lg font-bold uppercase tracking-tighter">Rockwell <span class="text-emerald-500">H2</span></span>
-                    <span class="text-[9px] uppercase tracking-[0.3em] text-slate-500 font-bold">Systems</span>
+    <nav class="fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="nav-shell flex items-center justify-between">
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+                    <div class="w-11 h-11 bg-gradient-to-br from-emerald-500 to-cyan-400 flex items-center justify-center rounded-2xl font-bold text-slate-900 shadow-lg group-hover:scale-105 transition-transform">R</div>
+                    <div class="flex flex-col leading-none">
+                        <span class="text-lg font-bold tracking-tight">Rockwell <span class="text-emerald-400">H2</span></span>
+                        <span class="text-[10px] uppercase tracking-[0.4em] text-slate-400 font-semibold">Systems</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="hidden lg:flex items-center space-x-8 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
-                <a href="#technology" class="hover:text-emerald-400 transition-colors">Technology</a>
-                <a href="#investors" class="hover:text-emerald-400 transition-colors">Investors</a>
-                <a href="#solutions" class="hover:text-emerald-400 transition-colors">Solutions</a>
-                <a href="#contact" class="px-6 py-2.5 bg-emerald-600/10 border border-emerald-600/20 rounded-full text-emerald-400 hover:bg-emerald-600 hover:text-white transition-all">Get Spec Sheet</a>
-            </div>
+                <div class="hidden lg:flex items-center space-x-8 text-[11px] font-bold uppercase tracking-[0.25em] text-slate-400">
+                    <a href="#technology" class="hover:text-emerald-400 transition-colors">Technology</a>
+                    <a href="#investors" class="hover:text-emerald-400 transition-colors">Investors</a>
+                    <a href="#solutions" class="hover:text-emerald-400 transition-colors">Solutions</a>
+                    <a href="#contact" class="px-6 py-2.5 bg-emerald-600/10 border border-emerald-600/30 rounded-full text-emerald-300 hover:bg-emerald-600 hover:text-white transition-all">Get Spec Sheet</a>
+                </div>
 
-            <button class="lg:hidden text-white" onclick="toggleMenu()">
-                <i data-lucide="menu"></i>
-            </button>
+                <button class="lg:hidden text-white" onclick="toggleMenu()">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
         </div>
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden lg:hidden bg-slate-900 border-b border-white/5 p-8 flex flex-col space-y-6 text-xs font-bold uppercase tracking-widest">
@@ -131,48 +184,82 @@
     <main class="relative z-10">
         
         <!-- Hero Section -->
-        <section class="min-h-screen flex items-center pt-20">
+        <section class="min-h-screen flex items-center pt-32 pb-20">
             <div class="max-w-7xl mx-auto px-6 w-full">
-                <div class="max-w-4xl reveal">
-                    <div class="inline-flex items-center space-x-3 mb-8 bg-emerald-500/10 border border-emerald-500/20 px-4 py-1.5 rounded-full backdrop-blur-md">
-                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                        <span class="mono text-emerald-400 uppercase tracking-[0.2em] text-[10px] font-bold">Scaling the Hydrogen Economy</span>
+                <div class="grid lg:grid-cols-[1.2fr_0.8fr] gap-16 items-center">
+                    <div class="max-w-4xl reveal">
+                        <div class="inline-flex items-center space-x-3 mb-8 tag-pill px-4 py-2 rounded-full backdrop-blur-md">
+                            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+                            <span class="mono text-emerald-200 uppercase tracking-[0.3em] text-[10px] font-bold">Scaling the Hydrogen Economy</span>
+                        </div>
+                        <h1 class="text-6xl md:text-7xl font-semibold mb-8 hero-clip tracking-tight">
+                            Industrial fuel <br>
+                            infrastructure that <br>
+                            <span class="italic text-emerald-400">adapts in weeks.</span>
+                        </h1>
+                        <p class="text-lg md:text-xl text-slate-400 mb-12 leading-relaxed max-w-2xl font-light">
+                            Site-integrated modular loops for green hydrogen production, high-pressure storage, and ultra-fast dispensing—tuned for ports, freight, and heavy industry corridors.
+                        </p>
+                        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+                            <a href="#technology" class="btn-glow bg-emerald-600 text-white px-10 py-5 rounded-full font-bold uppercase text-[11px] tracking-widest text-center">
+                                Explore Technology
+                            </a>
+                            <a href="#investors" class="bg-white/5 border border-white/10 hover:bg-white/10 text-white px-10 py-5 rounded-full font-bold uppercase text-[11px] tracking-widest text-center transition-all">
+                                Investor Portal
+                            </a>
+                        </div>
                     </div>
-                    <h1 class="text-6xl md:text-8xl font-bold mb-8 hero-clip uppercase tracking-tighter">
-                        Industrial <br>
-                        <span class="italic text-emerald-500">Resilience</span> <br>
-                        Delivered.
-                    </h1>
-                    <p class="text-xl md:text-2xl text-slate-400 mb-12 leading-relaxed max-w-2xl font-light">
-                        Site-integrated modular loops for green hydrogen production, high-pressure storage, and ultra-fast dispensing. Optimized for heavy industry.
-                    </p>
-                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
-                        <a href="#technology" class="btn-glow bg-emerald-600 text-white px-10 py-5 rounded-full font-bold uppercase text-[11px] tracking-widest text-center">
-                            Explore Technology
-                        </a>
-                        <a href="#investors" class="bg-white/5 border border-white/10 hover:bg-white/10 text-white px-10 py-5 rounded-full font-bold uppercase text-[11px] tracking-widest text-center transition-all">
-                            Investor Portal
-                        </a>
+
+                    <div class="glass p-8 rounded-[2.5rem] reveal delay-200 grid-dots">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <p class="text-[11px] uppercase tracking-[0.3em] text-emerald-300 font-semibold">Deployment Map</p>
+                                <p class="text-2xl font-semibold mt-2">Adaptive Pods</p>
+                            </div>
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 flex items-center justify-center text-emerald-300">
+                                <i data-lucide="navigation" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        <div class="space-y-4 text-sm text-slate-400">
+                            <div class="flex items-center justify-between">
+                                <span>Average site retrofit</span>
+                                <span class="text-white font-semibold">12 weeks</span>
+                            </div>
+                            <div class="h-px bg-white/10"></div>
+                            <div class="flex items-center justify-between">
+                                <span>Throughput ramp time</span>
+                                <span class="text-white font-semibold">3.2 days</span>
+                            </div>
+                            <div class="h-px bg-white/10"></div>
+                            <div class="flex items-center justify-between">
+                                <span>Remote diagnostics</span>
+                                <span class="text-white font-semibold">24/7</span>
+                            </div>
+                        </div>
+                        <div class="mt-8 flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-slate-500">
+                            <span class="w-8 h-px bg-emerald-500/50"></span>
+                            Verified operations data
+                        </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-24 reveal delay-200">
-                    <div class="glass p-8 rounded-3xl">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 reveal delay-200">
+                    <div class="stat-card">
                         <div class="text-[10px] uppercase tracking-widest text-emerald-500/60 font-bold mb-2">Efficiency</div>
                         <div class="text-2xl font-bold">54 kWh/kg</div>
                         <div class="text-[9px] text-slate-500 mt-1 font-bold tracking-widest uppercase">System Avg</div>
                     </div>
-                    <div class="glass p-8 rounded-3xl">
+                    <div class="stat-card">
                         <div class="text-[10px] uppercase tracking-widest text-emerald-500/60 font-bold mb-2">H2 Output</div>
                         <div class="text-2xl font-bold">225 kg/Day</div>
                         <div class="text-[9px] text-slate-500 mt-1 font-bold tracking-widest uppercase">Per Standard Pod</div>
                     </div>
-                    <div class="glass p-8 rounded-3xl">
+                    <div class="stat-card">
                         <div class="text-[10px] uppercase tracking-widest text-emerald-500/60 font-bold mb-2">ITC Eligible</div>
                         <div class="text-2xl font-bold">30% - 50%</div>
                         <div class="text-[9px] text-slate-500 mt-1 font-bold tracking-widest uppercase">Project Credits</div>
                     </div>
-                    <div class="glass p-8 rounded-3xl">
+                    <div class="stat-card">
                         <div class="text-[10px] uppercase tracking-widest text-emerald-500/60 font-bold mb-2">Pressure</div>
                         <div class="text-2xl font-bold">700 Bar</div>
                         <div class="text-[9px] text-slate-500 mt-1 font-bold tracking-widest uppercase">Peak Storage</div>
@@ -182,12 +269,12 @@
         </section>
 
         <!-- Technology Section -->
-        <section id="technology" class="py-32 bg-slate-950/50">
+        <section id="technology" class="section-pad bg-slate-950/50">
             <div class="max-w-7xl mx-auto px-6">
                 <div class="grid lg:grid-cols-2 gap-20 items-center">
                     <div class="reveal">
                         <h2 class="text-xs font-bold text-emerald-500 uppercase tracking-[0.4em] mb-6">The Hardware Stack</h2>
-                        <h3 class="text-4xl md:text-5xl font-bold mb-8 uppercase tracking-tight leading-tight">Modular Infrastructure for Localized Production.</h3>
+                        <h3 class="section-title font-semibold mb-8 leading-tight">Modular infrastructure for localized production.</h3>
                         <p class="text-slate-400 text-lg leading-relaxed mb-8">
                             Rockwell H2 Systems replaces the brittle hydrogen supply chain with site-integrated hardware. Our modular "Pods" allow industrial users to generate fuel exactly where it is consumed, eliminating 80% of logistics-related energy waste.
                         </p>
@@ -238,11 +325,11 @@
         </section>
 
         <!-- Investor Relations Section -->
-        <section id="investors" class="py-32">
+        <section id="investors" class="section-pad">
             <div class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-20 reveal">
                     <h2 class="text-emerald-500 text-xs font-bold uppercase tracking-[0.4em] mb-4">Investment Opportunity</h2>
-                    <h3 class="text-4xl md:text-6xl font-bold uppercase tracking-tighter">De-Risking the <br><span class="text-emerald-500 italic">Energy Transition</span></h3>
+                    <h3 class="section-title font-semibold">De-risking the <br><span class="text-emerald-400 italic">energy transition</span></h3>
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-8 reveal">
@@ -284,9 +371,9 @@
         </section>
 
         <!-- Contact / Engineering Brief -->
-        <section id="contact" class="py-32 bg-emerald-600/5">
+        <section id="contact" class="section-pad bg-emerald-600/5">
             <div class="max-w-4xl mx-auto px-6 text-center reveal">
-                <h2 class="text-3xl md:text-5xl font-bold mb-8 uppercase tracking-tight">Start Your Feasibility Study</h2>
+                <h2 class="text-3xl md:text-5xl font-semibold mb-8 tracking-tight">Start your feasibility study</h2>
                 <p class="text-slate-400 text-lg mb-12">Connect with our systems engineers to determine site requirements, ROI projections, and subsidy eligibility.</p>
                 
                 <form class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
